@@ -14,7 +14,7 @@ import androidx.lifecycle.LifecycleRegistry
 import java.util.concurrent.ExecutionException
 
 class CameraSession(private var context: Context) {
-    private var processOutput: ((ImageProxy, Int) -> Unit)? = null
+    private var processOutput: ((ImageProxy, Int, Boolean) -> Unit)? = null
     private var cameraProvider: ProcessCameraProvider? = null
     private var analysisUseCase: ImageAnalysis? = null
     private var lensFacing = CameraSelector.LENS_FACING_BACK
