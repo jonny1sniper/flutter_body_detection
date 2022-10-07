@@ -98,7 +98,7 @@ public class BitmapUtils {
     matrix.postRotate(rotationDegrees);
 
     // Mirror the image along the X or Y axis.
-    matrix.postScale(flipX ? -1.0f : 1.0f, flipY ? -1.0f : 1.0f, bitmap.getWidth() / 2f, bitmap.getHeight() / 2f);
+    matrix.postScale(flipX ? -1.0f : 1.0f, flipY ? -1.0f : 1.0f);
     Bitmap rotatedBitmap =
         Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
 

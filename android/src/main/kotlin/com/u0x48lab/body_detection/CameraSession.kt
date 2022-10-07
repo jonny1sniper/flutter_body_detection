@@ -76,7 +76,7 @@ class CameraSession(private var context: Context) {
         }
     }
 
-    fun start(closure: (ImageProxy, Int) -> Unit) {
+    fun start(closure: (ImageProxy, Int, Boolean) -> Unit) {
         processOutput = closure
 
         bindAnalysisUseCase()
