@@ -112,7 +112,7 @@ class CameraSession(private var context: Context) {
             ImageAnalysis.Analyzer { imageProxy: ImageProxy ->
                 val isImageFlipped = lensFacing == CameraSelector.LENS_FACING_FRONT
                 val rotationDegrees = imageProxy.imageInfo.rotationDegrees
-                processOutput?.let { it(imageProxy, rotationDegrees) }
+                processOutput?.let { it(imageProxy, rotationDegrees, isImageFlipped) }
             }
         )
 
