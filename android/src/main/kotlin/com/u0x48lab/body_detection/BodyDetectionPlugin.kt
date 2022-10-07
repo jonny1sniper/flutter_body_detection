@@ -25,7 +25,7 @@ class BodyDetectionPlugin: FlutterPlugin, MethodChannel.MethodCallHandler, Event
   private var poseDetectionEnabled = false
   private var bodyMaskDetectionEnabled = false
   private val poseDetector = MLKitPoseDetector(true)
-  private val selfieSegmenter = MLKitSelfieSegmenter()
+  // private val selfieSegmenter = MLKitSelfieSegmenter()
 
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
     context = flutterPluginBinding.applicationContext
@@ -54,12 +54,12 @@ class BodyDetectionPlugin: FlutterPlugin, MethodChannel.MethodCallHandler, Event
         val imageData = call.argument("pngImageBytes") as ByteArray?
         val bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData?.size ?: 0)
         val image = InputImage.fromBitmap(bitmap, 0)
-        MLKitSelfieSegmenter()
-          .process(image, OnSuccessListener {
-            result.success(it.toMap())
-          }, OnFailureListener {
-            result.error("SelfieSegmenterError", it.localizedMessage, it.stackTrace)
-          })
+        // MLKitSelfieSegmenter()
+        //   .process(image, OnSuccessListener {
+        //     result.success(it.toMap())
+        //   }, OnFailureListener {
+        //     result.error("SelfieSegmenterError", it.localizedMessage, it.stackTrace)
+        //   })
       }
       "enablePoseDetection" -> {
         poseDetectionEnabled = true
