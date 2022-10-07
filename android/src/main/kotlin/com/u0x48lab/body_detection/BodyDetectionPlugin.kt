@@ -146,21 +146,21 @@ class BodyDetectionPlugin: FlutterPlugin, MethodChannel.MethodCallHandler, Event
       }
 
       if (bodyMaskDetectionEnabled) {
-        val processed = selfieSegmenter.process(image, OnSuccessListener { mask ->
-          eventSink?.success(mapOf(
-            "type" to "mask",
-            "mask" to mask.toMap()
-          ))
+        // val processed = selfieSegmenter.process(image, OnSuccessListener { mask ->
+        //   eventSink?.success(mapOf(
+        //     "type" to "mask",
+        //     "mask" to mask.toMap()
+        //   ))
 
-          imageRefDown()
-        }, OnFailureListener { _ ->
-          eventSink?.success(mapOf(
-            "type" to "mask",
-            "mask" to null
-          ))
+        //   imageRefDown()
+        // }, OnFailureListener { _ ->
+        //   eventSink?.success(mapOf(
+        //     "type" to "mask",
+        //     "mask" to null
+        //   ))
 
-          imageRefDown()
-        })
+        //   imageRefDown()
+        // })
         if (!processed) imageRefDown()
       } else {
         imageRefDown()
