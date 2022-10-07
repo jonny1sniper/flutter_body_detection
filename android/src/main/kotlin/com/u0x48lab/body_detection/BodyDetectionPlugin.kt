@@ -161,7 +161,7 @@ class BodyDetectionPlugin: FlutterPlugin, MethodChannel.MethodCallHandler, Event
 
         //   imageRefDown()
         // })
-        if (!processed) imageRefDown()
+        // if (!processed) imageRefDown()
       } else {
         imageRefDown()
       }
