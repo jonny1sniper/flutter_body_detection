@@ -98,7 +98,7 @@ class BodyDetectionPlugin: FlutterPlugin, MethodChannel.MethodCallHandler, Event
 
   @SuppressLint("UnsafeExperimentalUsageError")
   private fun handleCameraFrame(imageProxy: ImageProxy, rotationDegrees: Int, isImageFlipped: Boolean) {
-    val bitmap = BitmapUtils.getBitmap(imageProxy, isImageFlipped)
+    val bitmap = BitmapUtils.getBitmap(imageProxy, false)
     val width = bitmap?.width ?: 0
     val height = bitmap?.height ?: 0
     val output = ByteArrayOutputStream()
