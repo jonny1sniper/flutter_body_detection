@@ -142,6 +142,26 @@ public class SwiftBodyDetectionPlugin: NSObject, FlutterPlugin {
             self.cameraSession = nil
             result(true)
             return
+
+        // Handle enableFrontCamera calls.
+        case "enableFrontCamera":
+            guard let session = self.cameraSession else {
+                print("Camera session is not active!")
+                return
+            }
+            session.switchCamera(true)
+            result(true)
+            return
+
+        // Handle enableBackCamera calls.
+        case "enableBackCamera":
+            guard let session = self.cameraSession else {
+                print("Camera session is not active!")
+                return
+            }
+            session.switchCamera(false)
+            result(true)
+            return
             
         // Method not implemented.
         default:
