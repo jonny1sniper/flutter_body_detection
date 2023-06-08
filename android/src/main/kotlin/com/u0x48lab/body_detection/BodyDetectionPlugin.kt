@@ -105,7 +105,7 @@ class BodyDetectionPlugin: FlutterPlugin, MethodChannel.MethodCallHandler, Event
     }
   }
 
-  private fun startCameraSession(lensFacing: Int = CameraSelector.LENS_FACING_BACK) {
+  private fun startCameraSession(lensFacing: Int? = CameraSelector.LENS_FACING_BACK) {
     val session = CameraSession(context)
     if (lensFacing != null) {
       session.lensFacing = lensFacing
