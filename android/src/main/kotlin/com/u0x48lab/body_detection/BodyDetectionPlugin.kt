@@ -90,6 +90,7 @@ class BodyDetectionPlugin: FlutterPlugin, MethodChannel.MethodCallHandler, Event
         val lensFacing = cameraSession?.lensFacing
         stopCameraSession()
         startCameraSession(lensFacing)
+        result.success(true)
       }
       "enableFrontCamera" -> {
         cameraSession?.switchCamera(true)
