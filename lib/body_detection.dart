@@ -99,6 +99,22 @@ class BodyDetection {
     }
   }
 
+  static Future<void> enableFrontCamera() async {
+    try {
+      await _channel.invokeMethod<void>('enableFrontCamera');
+    } on PlatformException catch (e) {
+      throw BodyDetectionException(e.code, e.message);
+    }
+  }
+
+  static Future<void> enableBackCamera() async {
+    try {
+      await _channel.invokeMethod<void>('enableBackCamera');
+    } on PlatformException catch (e) {
+      throw BodyDetectionException(e.code, e.message);
+    }
+  }
+
   static Future<void> enablePoseDetection() async {
     try {
       await _channel.invokeMethod<void>('enablePoseDetection');
