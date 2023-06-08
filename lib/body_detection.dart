@@ -60,29 +60,10 @@ class BodyDetection {
     try {
       await _channel.invokeMethod<void>('startCameraStream');
 
-      _imageStreamSubscription = _eventChannel.receiveBroadcastStream().listen(
-        (dynamic result) {
-          final type = result['type'];
-          // Camera image
-          if (type == 'image' && onFrameAvailable != null) {
-            onFrameAvailable(
-              ImageResult.fromMap(result),
-            );
-          }
-          // Pose detection result
-          else if (type == 'pose' && onPoseAvailable != null) {
-            onPoseAvailable(
-              result['pose'] == null ? null : Pose.fromMap(result['pose']),
-            );
-          }
-          // Selfie segmentation result
-          else if (type == 'mask' && onMaskAvailable != null) {
-            onMaskAvailable(
-              result['mask'] == null ? null : BodyMask.fromMap(result['mask']),
-            );
-          }
-        },
-      );
+      _startImageSubscription(
+          onFrameAvailable: onFrameAvailable,
+          onPoseAvailable: onPoseAvailable,
+          onMaskAvailable: onMaskAvailable);
     } on PlatformException catch (e) {
       throw BodyDetectionException(e.code, e.message);
     }
@@ -99,12 +80,21 @@ class BodyDetection {
     }
   }
 
-  static Future<void> restartCameraStream() async {
+  static Future<void> restartCameraStream({
+    ImageCallback? onFrameAvailable,
+    PoseCallback? onPoseAvailable,
+    BodyMaskCallback? onMaskAvailable,
+  }) async {
     try {
       await _imageStreamSubscription?.cancel();
       _imageStreamSubscription = null;
 
       await _channel.invokeMethod<void>('restartCameraStream');
+
+      _startImageSubscription(
+          onFrameAvailable: onFrameAvailable,
+          onPoseAvailable: onPoseAvailable,
+          onMaskAvailable: onMaskAvailable);
     } on PlatformException catch (e) {
       throw BodyDetectionException(e.code, e.message);
     }
@@ -156,5 +146,35 @@ class BodyDetection {
     } on PlatformException catch (e) {
       throw BodyDetectionException(e.code, e.message);
     }
+  }
+
+  static void _startImageSubscription({
+    ImageCallback? onFrameAvailable,
+    PoseCallback? onPoseAvailable,
+    BodyMaskCallback? onMaskAvailable,
+  }) {
+    _imageStreamSubscription = _eventChannel.receiveBroadcastStream().listen(
+      (dynamic result) {
+        final type = result['type'];
+        // Camera image
+        if (type == 'image' && onFrameAvailable != null) {
+          onFrameAvailable(
+            ImageResult.fromMap(result),
+          );
+        }
+        // Pose detection result
+        else if (type == 'pose' && onPoseAvailable != null) {
+          onPoseAvailable(
+            result['pose'] == null ? null : Pose.fromMap(result['pose']),
+          );
+        }
+        // Selfie segmentation result
+        else if (type == 'mask' && onMaskAvailable != null) {
+          onMaskAvailable(
+            result['mask'] == null ? null : BodyMask.fromMap(result['mask']),
+          );
+        }
+      },
+    );
   }
 }
