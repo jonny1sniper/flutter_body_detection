@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.annotation.NonNull
+import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageProxy
 import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
@@ -78,17 +79,17 @@ class BodyDetectionPlugin: FlutterPlugin, MethodChannel.MethodCallHandler, Event
         result.success(null)
       }
       "startCameraStream" -> {
-        val session = CameraSession(context)
-        session.start { imageProxy, rotationDegrees, isImageFlipped ->
-          handleCameraFrame(imageProxy, rotationDegrees, isImageFlipped)
-        }
-        cameraSession = session
+        startCameraSession()
         result.success(true)
       }
       "stopCameraStream" -> {
-        cameraSession?.stop()
-        cameraSession = null
+        stopCameraSession()
         result.success(true)
+      }
+      "restartCameraStream" -> {
+        val lensFacing = cameraSession?.lensFacing
+        stopCameraSession()
+        startCameraSession(lensFacing)
       }
       "enableFrontCamera" -> {
         cameraSession?.switchCamera(true)
@@ -102,6 +103,22 @@ class BodyDetectionPlugin: FlutterPlugin, MethodChannel.MethodCallHandler, Event
         result.notImplemented()
       }
     }
+  }
+
+  private fun startCameraSession(lensFacing = CameraSelector.LENS_FACING_BACK) {
+    val session = CameraSession(context)
+    if (lensFacing != null) {
+      session.lensFacing = lensFacing
+    }
+    session.start { imageProxy, rotationDegrees, isImageFlipped ->
+      handleCameraFrame(imageProxy, rotationDegrees, isImageFlipped)
+    }
+    cameraSession = session
+  }
+
+  private fun stopCameraSession() {
+    cameraSession?.stop()
+    cameraSession = null
   }
 
   @SuppressLint("UnsafeExperimentalUsageError")

@@ -17,9 +17,18 @@ class CameraSession(private var context: Context) {
     private var processOutput: ((ImageProxy, Int, Boolean) -> Unit)? = null
     private var cameraProvider: ProcessCameraProvider? = null
     private var analysisUseCase: ImageAnalysis? = null
-    private var lensFacing = CameraSelector.LENS_FACING_BACK
     private var cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
     private val lifecycle = CustomLifecycle()
+
+    public var lensFacing = CameraSelector.LENS_FACING_BACK
+        set(value) {
+            field = value
+            if (value == CameraSelector.LENS_FACING_BACK) {
+                cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
+            } else {
+                cameraSelector = CameraSelector.DEFAULT_FRONT_CAMERA
+            }
+        }
 
     init {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(context)

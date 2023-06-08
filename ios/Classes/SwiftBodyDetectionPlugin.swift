@@ -122,24 +122,20 @@ public class SwiftBodyDetectionPlugin: NSObject, FlutterPlugin {
             
         // Handle startCameraStreamPoseDetection calls.
         case "startCameraStream":
-            guard self.cameraSession == nil else {
-                print("Camera session already active! Call stopCameraStream first and try again.")
-                return
-            }
-            let session = CameraSession()
-            session.start(closure: self.handleCameraFrame)
-            self.cameraSession = session
+            startCameraStream()
             result(true)
             return
             
         // Handle stopCameraStreamPoseDetection calls.
         case "stopCameraStream":
-            guard let session = self.cameraSession else {
-                print("Camera session is not active!")
-                return
-            }
-            session.stop()
-            self.cameraSession = nil
+            self.stopCameraStream()
+            result(true)
+            return
+
+        case "restartCameraStream":
+            let isUsingFrontCamera = self.cameraSession.isUsingFrontCamera
+            self.stopCameraStream()
+            self.startCameraStream(isUsingFrontCamera)
             result(true)
             return
 
@@ -167,6 +163,26 @@ public class SwiftBodyDetectionPlugin: NSObject, FlutterPlugin {
         default:
             result(FlutterMethodNotImplemented)
         }
+    }
+
+    private func startCameraStream(isUsingFrontCamera: Bool = false) {
+        guard self.cameraSession == nil else {
+            print("Camera session already active! Call stopCameraStream first and try again.")
+            return
+        }
+        let session = CameraSession()
+        session.isUsingFrontCamera = isUsingFrontCamera
+        session.start(closure: self.handleCameraFrame)
+        self.cameraSession = session
+    }
+
+    private func stopCameraStream() {
+        guard let session = self.cameraSession else {
+            print("Camera session is not active!")
+            return
+        }
+        session.stop()
+        self.cameraSession = nil
     }
     
     private func handleCameraFrame(sampleBuffer: CMSampleBuffer, orientation: UIImage.Orientation) {

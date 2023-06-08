@@ -25,9 +25,10 @@ import Foundation
 public class CameraSession: NSObject {
     private lazy var captureSession = AVCaptureSession()
     private lazy var sessionQueue = DispatchQueue(label: "camera")
-    private var isUsingFrontCamera = false
     private var processOutput: ((CMSampleBuffer, UIImage.Orientation) -> Void)?
-    
+
+    public var isUsingFrontCamera = false
+
     public override init() {
         super.init()
         
