@@ -133,9 +133,12 @@ public class SwiftBodyDetectionPlugin: NSObject, FlutterPlugin {
             return
 
         case "restartCameraStream":
-            let isUsingFrontCamera = self.cameraSession.isUsingFrontCamera
+            var isUsingFrontCamera = false
+            if let cameraSession = self.cameraSession {
+                isUsingFrontCamera = cameraSession.isUsingFrontCamera
+            }
             self.stopCameraStream()
-            self.startCameraStream(isUsingFrontCamera)
+            self.startCameraStream(isUsingFrontCamera: isUsingFrontCamera)
             result(true)
             return
 
@@ -145,7 +148,7 @@ public class SwiftBodyDetectionPlugin: NSObject, FlutterPlugin {
                 print("Camera session is not active!")
                 return
             }
-            session.switchCamera(true)
+            session.switchCamera(isFront: true)
             result(true)
             return
 
@@ -155,7 +158,7 @@ public class SwiftBodyDetectionPlugin: NSObject, FlutterPlugin {
                 print("Camera session is not active!")
                 return
             }
-            session.switchCamera(false)
+            session.switchCamera(isFront: false)
             result(true)
             return
             
