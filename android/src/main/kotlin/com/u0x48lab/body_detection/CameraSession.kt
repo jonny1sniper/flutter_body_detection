@@ -101,9 +101,7 @@ class CameraSession(private var context: Context) {
     private fun unbindAnalysisUseCase() {
         if (cameraProvider == null) return
 
-        if (analysisUseCase != null) {
-            cameraProvider!!.unbind(analysisUseCase)
-        }
+        cameraProvider!!.unbindAll()
     }
 
     private fun bindAnalysisUseCase() {
